@@ -1,0 +1,65 @@
+﻿<Window x:Class="HomeAccount.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HomeAccount.Views"
+        xmlns:vm="clr-namespace:HomeAccount.ViewModels"
+        mc:Ignorable="d"
+        Title="MainView" Height="450" Width="800">
+    <!--Resource-->
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
+            <local:DashboardView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:TaskViewModel}">
+            <local:TaskView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:FinanceViewModel}">
+            <local:FinanceView/>
+        </DataTemplate>
+    </Window.Resources>
+    <!--DataContext-->
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+    <!--View-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--Header-->
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Expense record"/>
+            </StackPanel>
+        </Grid>
+        <!--Main-->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!--Menu-->
+            <StackPanel Grid.Column="0">
+                <RadioButton Content="Dashboard"
+                             Style="{StaticResource {x:Type ToggleButton}}"
+                             IsChecked="True"
+                             Command="{Binding DashboardCommand}"/>
+                <RadioButton Content="Task"
+                             Style="{StaticResource {x:Type ToggleButton}}"
+                             Command="{Binding TaskCommand}"/>
+                <RadioButton Content="Finance"
+                             Style="{StaticResource {x:Type ToggleButton}}"
+                             Command="{Binding FinanceCommand}"/>
+                <RadioButton Content="Celing"
+                             Style="{StaticResource {x:Type ToggleButton}}"/>
+            </StackPanel>
+            <!--Contents-->
+            <Grid Grid.Column="1">
+                <ContentControl Content="{Binding CurrentContents}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
