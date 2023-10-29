@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="HomeAccount.Views.CategoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HomeAccount.Views"
+             xmlns:vm="clr-namespace:HomeAccount.ViewModels"
+             xmlns:utils="clr-namespace:HomeAccount.Utils"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:CategoryViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <utils:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+    <Grid >
+        <Grid Background="LightGray"
+              Opacity=".3"
+              utils:GridHelper.Command="{Binding CloseCommand}"/>
+        <Border CornerRadius="8"
+                Padding="16"
+                Width="300"
+                Height="400"
+                Background="White">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10"
+                                  ShadowDepth="0"
+                                  Direction="270"
+                                  RenderingBias="Performance"/>
+            </Border.Effect>
+            
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center">
+                <TextBlock Text="{Binding Header}"
+                           TextAlignment="Center"/>
+
+                <ListBox x:Name="listBox"
+                         Height="200"
+                         ItemsSource="{Binding Categories}"
+                         SelectedItem="{Binding SelectedCategory}"
+                         utils:ListBoxHelper.ItemDoubleClickCommand="{Binding ShowEditCommand}">
+                </ListBox>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Content="Up"
+                            Click="Up_Click"/>
+                    <Button Content="Down"
+                            Click="Down_Click"/>
+                    <Button Content="Apply"
+                            Command="{Binding ApplyCommand}"/>
+                </StackPanel>
+                <TextBox Text="{Binding Name}"
+                         utils:TextBoxHelper.UseOnPropertyChanged="True">
+                    <TextBox.InputBindings>
+                        <KeyBinding Gesture="Return"
+                                    Command="{Binding SaveCommand}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+                <Button Content="Save" Command="{Binding SaveCommand}"/>
+                <Button Content="Edit" Command="{Binding ShowEditCommand}"/>
+                <Button Content="Remove" Command="{Binding RemoveCommand}"/>
+                <Button Content="Cancel" Command="{Binding CloseCommand}"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Visibility="{Binding ShowEdit, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid Background="LightGray"
+                  Opacity=".3"
+                  utils:GridHelper.Command="{Binding CancelEditCommand}">
+            </Grid>
+            <Border CornerRadius="8"
+                    Width="200"
+                    Height="100"
+                    Padding="16"
+                    Background="GhostWhite">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10"
+                                      ShadowDepth="0"
+                                      Direction="270"
+                                      RenderingBias="Performance"/>
+                </Border.Effect>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBox Text="{Binding EditedName}"
+                             utils:TextBoxHelper.UseOnPropertyChanged="True">
+                        <TextBox.InputBindings>
+                            <KeyBinding Gesture="Return"
+                                        Command="{Binding EditCommand}"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <Button Content="Edit"
+                            Command="{Binding EditCommand}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
